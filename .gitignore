@@ -1,0 +1,6 @@
+
+.env
+*.pyc
+result.log
+result.xls
+.DS_Store
