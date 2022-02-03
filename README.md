@@ -12,9 +12,7 @@
 
 Create a file named `.env` to configure the scraper before running the script.
 
-## Parameters
-
-Please follow the constraints listed below in order to avoid bugs or crashes.
+## Parameters (.env file)
 
 | Parameter           | Type | Example                    |
 |---------------------|------|----------------------------|
@@ -22,7 +20,7 @@ Please follow the constraints listed below in order to avoid bugs or crashes.
 | `HELIUM_DATE_START` | Date | `YYYY-MM-DD`               |
 | `HELIUM_DATE_END`   | Date | `YYYY-MM-DD`               |
 
-## Example
+## Example (.env file)
 
 ```py
 HELIUM_HOTSPOTS='["112JaSahbeGycRr9dAzJALckxq7gxEewvhf8hBitWmiu6kbcdGPC", "112DcZEZFVomTmuqjbW2axozVAtwXQqAUereenqfECUNqEL3CqpL"]'
