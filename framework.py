@@ -1,7 +1,9 @@
 import logging
 from datetime import datetime
 from dotenv import dotenv_values
+import json
 
+# Define console class used for printing colored timestamped messages
 class console:
 	def timestamp():
 		return datetime.now().strftime('%H:%M:%S.%f')[:-4]
@@ -18,30 +20,51 @@ class console:
 	UNDERLINE = '\033[4m'
 	ENDC      = '\033[0m'
 
+# Define env class used for loading env variables from ".env" file into one array
 class env:
-	def Load():
-		envValues = dotenv_values()
-		if envValues == {}:
-			e = 'Dotenv file not found or empty!'
-			logger.error(e)
-			raise FileNotFoundError(e)
-		else:
-			envHotspot = envValues['HELIUM_HOTSPOTS'] if envValues['HELIUM_HOTSPOTS'] != '[]' else env.NotFound('HELIUM_HOTSPOTS')
-			envDateStart = envValues['HELIUM_DATE_START'] if envValues['HELIUM_DATE_START'] != '' else env.NotFound('HELIUM_DATE_START') 
-			envDateEnd = envValues['HELIUM_DATE_END'] if envValues['HELIUM_DATE_END'] != '' else env.NotFound('HELIUM_DATE_END') 
-			return {
-				'HELIUM_HOTSPOTS': envHotspot,
-				'HELIUM_DATE_START': envDateStart,
-				'HELIUM_DATE_END': envDateEnd,
-			}
-
-	def NotFound(key):
-		e = f'Key "{key}" not found in Dotenv file!'
+	def empty(key):
+		e = f'Key "{key}" empty in Dotenv file!'
 		logger.error(e)
 		raise KeyError(e)
 
+	def load():
+		try:
+			envValues = dotenv_values()
+			if envValues != {}:
+				# If key is empty, raise KeyError using env.empty(key)
+				envHotspots = envValues['HELIUM_HOTSPOTS'] if envValues['HELIUM_HOTSPOTS'] != '[]' else env.empty('HELIUM_HOTSPOTS')
+				envDateStart = envValues['HELIUM_DATE_START'] if envValues['HELIUM_DATE_START'] != '' else env.empty('HELIUM_DATE_START') 
+				envDateEnd = envValues['HELIUM_DATE_END'] if envValues['HELIUM_DATE_END'] != '' else env.empty('HELIUM_DATE_END') 
+				try:
+					json.loads(envHotspots)
+				except json.decoder.JSONDecodeError as e:
+					raise KeyError('HELIUM_HOTSPOTS')
+				return {
+					'HELIUM_HOTSPOTS': envHotspots,
+					'HELIUM_DATE_START': envDateStart,
+					'HELIUM_DATE_END': envDateEnd,
+				}
+			else:
+				e_userFriendly = 'Dotenv file not found or empty!'
+				raise FileNotFoundError(e_userFriendly)
+
+		# Catch blank file or inexistent file
+		except FileNotFoundError as e:
+			e_userFriendly = f'{type(e).__name__}: {e.args[0]}'
+			console.print(e_userFriendly, color=console.FAIL)
+			logger.error(e_userFriendly)
+			exit()
+		
+		# Catch miconfigured values (general)
+		except KeyError as e:
+			e_userFriendly = f'{type(e).__name__}: Key "{e.args[0]}" is misconfigured!'
+			console.print(e_userFriendly, color=console.FAIL)
+			logger.error(e_userFriendly)
+			exit()
+
+# Define logger class used for logging events to a log file set on line :67
 class logger:
-	logging.basicConfig(filename=f'result.log', filemode='w', level=logging.DEBUG, format='%(asctime)s § %(name)-24s § %(filename)-38s § %(threadName)-36s § %(lineno)-7s § %(levelname)-8s § %(message)s', datefmt='%Y-%m-%d %T%Z')
+	logging.basicConfig(filename=f'result.log', filemode='w', level=logging.INFO, format='%(asctime)s § %(name)-24s § %(filename)-38s § %(threadName)-36s § %(lineno)-7s § %(levelname)-8s § %(message)s', datefmt='%Y-%m-%d %T%Z')
 	
 	def start(filename='result.log', level=logging.INFO, loggername='helium.logger'):
 		logger = logging.getLogger(loggername); logger.setLevel(level)
