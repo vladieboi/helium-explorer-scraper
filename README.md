@@ -14,7 +14,7 @@ If you found this script useful, please consider donating in HNT or ETH:
 
 1. Make sure you have Python3 and Pip installed. Check using `python --version` and `pip --version`
 2. Clone repo using `git clone https://github.com/vladieboi/helium-explorer-scraper/` (or download it)
-3. Navigate to said repo using `cd path/to/download/folder`
+3. Navigate to download folder repo using `cd path/to/download/folder`
 4. Install required packages using `pip install -r requirements.txt`
 5. Configure the scraper by creating a file named `.env` as shown below
 6. Run the script using `python scraper.py`
