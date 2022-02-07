@@ -13,10 +13,11 @@ If you found this script useful, please consider donating in HNT or ETH:
 # Install
 
 1. Make sure you have Python3 and Pip installed. Check using `python --version` and `pip --version`
-1. Clone repo using `git clone https://github.com/vladieboi/helium-explorer-scraper/` (or download it)
-1. Install rquired packages using `pip install -r requirements.txt`
-1. Configure the scraper by creating a file named `.env` as shown below
-1. Run the script using `python scraper.py`
+2. Clone repo using `git clone https://github.com/vladieboi/helium-explorer-scraper/` (or download it)
+3. Navigate to said repo using `cd path/to/download/folder`
+4. Install required packages using `pip install -r requirements.txt`
+5. Configure the scraper by creating a file named `.env` as shown below
+6. Run the script using `python scraper.py`
 
 ---
 
